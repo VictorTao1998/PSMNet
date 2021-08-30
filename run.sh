@@ -19,7 +19,7 @@ python /cephfs/jianyu/PSMNet/main.py \
     --using_ns \
     --ns_size 3 \
     --model gwcnet-c \
-    --logdir "/cephfs/jianyu/eval/cs_eval"  \
+    --logdir "/cephfs/jianyu/eval/psm_eval"  \
     --ndisps "48,24" \
     --disp_inter_r "4,1"  \
     --batch_size 2 \
