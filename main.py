@@ -145,98 +145,98 @@ print('Number of model parameters: {}'.format(sum([p.data.nelement() for p in mo
 optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999))
 
 def train(imgL,imgR, disp_L):
-        model.train()
+    model.train()
 
-        if args.cuda:
-            imgL, imgR, disp_true = imgL.cuda(), imgR.cuda(), disp_L.cuda()
+    if args.cuda:
+        imgL, imgR, disp_true = imgL.cuda(), imgR.cuda(), disp_L.cuda()
 
-        disp_gt_t = disp_L.reshape((args.batch_size,1,args.crop_height,args.crop_width))
-        disparity_L_from_R = apply_disparity_cu(disp_gt_t, disp_gt_t.int())
-        #disp_gt = disparity_L_from_R.reshape((1,2,256,512))
-        disp_L = disparity_L_from_R.reshape((args.batch_size,args.crop_height,args.crop_width))
-
-
-       #---------
-        mask = (disp_true < args.maxdisp) & (disp_true > 0)
-        mask.detach_()
-        #----
-        optimizer.zero_grad()
-        
-        if args.model == 'stackhourglass':
-            output1, output2, output3 = model(imgL,imgR)
-            output1 = torch.squeeze(output1,1)
-            output2 = torch.squeeze(output2,1)
-            output3 = torch.squeeze(output3,1)
-            loss = 0.5*F.smooth_l1_loss(output1[mask], disp_true[mask], size_average=True) + 0.7*F.smooth_l1_loss(output2[mask], disp_true[mask], size_average=True) + F.smooth_l1_loss(output3[mask], disp_true[mask], size_average=True) 
-        elif args.model == 'basic':
-            output = model(imgL,imgR)
-            output = torch.squeeze(output,1)
-            loss = F.smooth_l1_loss(output[mask], disp_true[mask], size_average=True)
-
-        image_outputs = {"disp_est": output, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
-        scalar_outputs = {}
-
-        image_outputs["errormap"] = [disp_error_image_func.apply(output, disp_true)]
-        scalar_outputs["loss"] = [loss.item()]
+    disp_gt_t = disp_L.reshape((args.batch_size,1,args.crop_height,args.crop_width))
+    disparity_L_from_R = apply_disparity_cu(disp_gt_t, disp_gt_t.int())
+    #disp_gt = disparity_L_from_R.reshape((1,2,256,512))
+    disp_L = disparity_L_from_R.reshape((args.batch_size,args.crop_height,args.crop_width))
 
 
-        loss.backward()
-        optimizer.step()
+#---------
+    mask = (disp_true < args.maxdisp) & (disp_true > 0)
+    mask.detach_()
+    #----
+    optimizer.zero_grad()
+    
+    if args.model == 'stackhourglass':
+        output1, output2, output3 = model(imgL,imgR)
+        output1 = torch.squeeze(output1,1)
+        output2 = torch.squeeze(output2,1)
+        output3 = torch.squeeze(output3,1)
+        loss = 0.5*F.smooth_l1_loss(output1[mask], disp_true[mask], size_average=True) + 0.7*F.smooth_l1_loss(output2[mask], disp_true[mask], size_average=True) + F.smooth_l1_loss(output3[mask], disp_true[mask], size_average=True) 
+    elif args.model == 'basic':
+        output = model(imgL,imgR)
+        output = torch.squeeze(output,1)
+        loss = F.smooth_l1_loss(output[mask], disp_true[mask], size_average=True)
 
-        return loss.data, image_outputs, scalar_outputs
+    image_outputs = {"disp_est": output, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
+    scalar_outputs = {}
+
+    image_outputs["errormap"] = [disp_error_image_func.apply(output, disp_true)]
+    scalar_outputs["loss"] = [loss.item()]
+
+
+    loss.backward()
+    optimizer.step()
+
+    return loss.data, image_outputs, scalar_outputs
 
 def test(imgL,imgR,disp_true):
 
-        model.eval()
-  
-        if args.cuda:
-            imgL, imgR, disp_true = imgL.cuda(), imgR.cuda(), disp_true.cuda()
+    model.eval()
 
-        disp_gt_t = disp_true.reshape((args.test_batch_size,1,args.test_crop_height,args.test_crop_width))
-        disparity_L_from_R = apply_disparity_cu(disp_gt_t, disp_gt_t.int())
-        #disp_gt = disparity_L_from_R.reshape((1,2,256,512))
-        disp_true = disparity_L_from_R.reshape((args.test_batch_size,args.test_crop_height,args.test_crop_width))
+    if args.cuda:
+        imgL, imgR, disp_true = imgL.cuda(), imgR.cuda(), disp_true.cuda()
 
-        #---------
-        mask = (disp_true < 192) & (disp_true > 0) 
-        #----
+    disp_gt_t = disp_true.reshape((args.test_batch_size,1,args.test_crop_height,args.test_crop_width))
+    disparity_L_from_R = apply_disparity_cu(disp_gt_t, disp_gt_t.int())
+    #disp_gt = disparity_L_from_R.reshape((1,2,256,512))
+    disp_true = disparity_L_from_R.reshape((args.test_batch_size,args.test_crop_height,args.test_crop_width))
 
-        if imgL.shape[2] % 16 != 0:
-            times = imgL.shape[2]//16       
-            top_pad = (times+1)*16 -imgL.shape[2]
-        else:
-            top_pad = 0
+    #---------
+    mask = (disp_true < 192) & (disp_true > 0) 
+    #----
 
-        if imgL.shape[3] % 16 != 0:
-            times = imgL.shape[3]//16                       
-            right_pad = (times+1)*16-imgL.shape[3]
-        else:
-            right_pad = 0  
+    if imgL.shape[2] % 16 != 0:
+        times = imgL.shape[2]//16       
+        top_pad = (times+1)*16 -imgL.shape[2]
+    else:
+        top_pad = 0
 
-        imgL = F.pad(imgL,(0,right_pad, top_pad,0))
-        imgR = F.pad(imgR,(0,right_pad, top_pad,0))
+    if imgL.shape[3] % 16 != 0:
+        times = imgL.shape[3]//16                       
+        right_pad = (times+1)*16-imgL.shape[3]
+    else:
+        right_pad = 0  
 
-        with torch.no_grad():
-            output3 = model(imgL,imgR)
-            output3 = torch.squeeze(output3)
-        
-        if top_pad !=0:
-            img = output3[:,top_pad:,:]
-        else:
-            img = output3
+    imgL = F.pad(imgL,(0,right_pad, top_pad,0))
+    imgR = F.pad(imgR,(0,right_pad, top_pad,0))
 
-        if len(disp_true[mask])==0:
-           loss = 0
-        else:
-           loss = F.l1_loss(img[mask],disp_true[mask]) #torch.mean(torch.abs(img[mask]-disp_true[mask]))  # end-point-error
+    with torch.no_grad():
+        output3 = model(imgL,imgR)
+        output3 = torch.squeeze(output3)
+    
+    if top_pad !=0:
+        img = output3[:,top_pad:,:]
+    else:
+        img = output3
 
-        image_outputs = {"disp_est": img, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
-        scalar_outputs = {}
+    if len(disp_true[mask])==0:
+    loss = 0
+    else:
+    loss = F.l1_loss(img[mask],disp_true[mask]) #torch.mean(torch.abs(img[mask]-disp_true[mask]))  # end-point-error
 
-        image_outputs["errormap"] = [disp_error_image_func.apply(img, disp_true)]
-        scalar_outputs["loss"] = [loss.item()]
+    image_outputs = {"disp_est": img, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
+    scalar_outputs = {}
 
-        return loss.data.cpu(), image_outputs, scalar_outputs
+    image_outputs["errormap"] = [disp_error_image_func.apply(img, disp_true)]
+    scalar_outputs["loss"] = [loss.item()]
+
+    return loss.data.cpu(), image_outputs, scalar_outputs
 
 def adjust_learning_rate(optimizer, epoch):
     lr = 0.001
