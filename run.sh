@@ -1,8 +1,6 @@
 #!/bin/bash
 
 python /cephfs/jianyu/PSMNet/main.py \
-    --dataset messy_table \
-    --test_dataset messy_table \
     --datapath /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training \
     --trainlist /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training_lists/all_train.txt \
     --test_datapath /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training \

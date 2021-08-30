@@ -34,10 +34,9 @@ parser.add_argument('--no-cuda', action='store_true', default=False,
 parser.add_argument('--seed', type=int, default=1, metavar='S',
                     help='random seed (default: 1)')
 
-parser.add_argument('--dataset', required=True, help='dataset name', choices=__datasets__.keys())
+
 parser.add_argument('--datapath', required=True, help='data path')
 parser.add_argument('--depthpath', required=True, help='depth path')
-parser.add_argument('--test_dataset', required=True, help='dataset name', choices=__datasets__.keys())
 parser.add_argument('--test_datapath', required=True, help='data path')
 parser.add_argument('--test_sim_datapath', required=True, help='data path')
 parser.add_argument('--test_real_datapath', required=True, help='data path')
