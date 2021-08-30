@@ -23,8 +23,7 @@ parser.add_argument('--model', default='stackhourglass',
                     help='select model')
 #parser.add_argument('--datapath', default='/media/jiaren/ImageNet/SceneFlowData/',
 #                    help='datapath')
-parser.add_argument('--epochs', type=int, default=10,
-                    help='number of epochs to train')
+
 parser.add_argument('--loadmodel', default= None,
                     help='load model')
 parser.add_argument('--savemodel', default='/cephfs/jianyu',
