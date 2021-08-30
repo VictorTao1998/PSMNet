@@ -248,39 +248,39 @@ def adjust_learning_rate(optimizer, epoch):
 def main():
     logger = SummaryWriter(args.logdir)
 
-	start_full_time = time.time()
-	for epoch in range(0, args.epochs):
-	   print('This is %d-th epoch' %(epoch))
-	   total_train_loss = 0
-	   adjust_learning_rate(optimizer,epoch)
+    start_full_time = time.time()
+    for epoch in range(0, args.epochs):
+        print('This is %d-th epoch' %(epoch))
+        total_train_loss = 0
+        adjust_learning_rate(optimizer,epoch)
 
-	   ## training ##
-	   for batch_idx, data in enumerate(TrainImgLoader):
-            imgL_crop, imgR_crop, disp_crop_L = data['left'], data['right'], data['disparity']
+        ## training ##
+        for batch_idx, data in enumerate(TrainImgLoader):
+                imgL_crop, imgR_crop, disp_crop_L = data['left'], data['right'], data['disparity']
 
-            global_step = len(TrainImgLoader) * epoch + batch_idx
-            do_summary = global_step % args.summary_freq == 0
-            start_time = time.time()
+                global_step = len(TrainImgLoader) * epoch + batch_idx
+                do_summary = global_step % args.summary_freq == 0
+                start_time = time.time()
 
-            loss, image_outputs, scalar_outputs = train(imgL_crop,imgR_crop, disp_crop_L)
+                loss, image_outputs, scalar_outputs = train(imgL_crop,imgR_crop, disp_crop_L)
 
-            if do_summary:
-                save_scalars(logger, 'train', scalar_outputs, global_step)
-                save_images(logger, 'train', image_outputs, global_step)
-                #save_texts(logger, 'train', text_outputs, global_step)
-            del scalar_outputs, image_outputs
+                if do_summary:
+                    save_scalars(logger, 'train', scalar_outputs, global_step)
+                    save_images(logger, 'train', image_outputs, global_step)
+                    #save_texts(logger, 'train', text_outputs, global_step)
+                del scalar_outputs, image_outputs
 
-            print('Iter %d training loss = %.3f , time = %.2f' %(batch_idx, loss, time.time() - start_time))
-            total_train_loss += loss
-	   print('epoch %d total training loss = %.3f' %(epoch, total_train_loss/len(TrainImgLoader)))
+                print('Iter %d training loss = %.3f , time = %.2f' %(batch_idx, loss, time.time() - start_time))
+                total_train_loss += loss
+        print('epoch %d total training loss = %.3f' %(epoch, total_train_loss/len(TrainImgLoader)))
 
-	   #SAVE
-	   savefilename = args.logdir+'/checkpoint_'+str(epoch)+'.tar'
-	   torch.save({
-		    'epoch': epoch,
-		    'state_dict': model.state_dict(),
-                    'train_loss': total_train_loss/len(TrainImgLoader),
-		}, savefilename)
+        #SAVE
+        savefilename = args.logdir+'/checkpoint_'+str(epoch)+'.tar'
+        torch.save({
+                'epoch': epoch,
+                'state_dict': model.state_dict(),
+                'train_loss': total_train_loss/len(TrainImgLoader),
+            }, savefilename)
 
 	print('full training time = %.2f HR' %((time.time() - start_full_time)/3600))
 
