@@ -7,12 +7,12 @@ python /cephfs/jianyu/PSMNet/main.py \
     --trainlist /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training_lists/all_train.txt \
     --test_datapath /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training \
     --testlist /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training_lists/all_val.txt \
-    --epochs 300 \
+    --epochs 5 \
     --lrepochs "200:10" \
     --crop_width 512  \
     --crop_height 256 \
-    --test_crop_width 1248  \
-    --test_crop_height 768 \
+    --test_crop_width 960  \
+    --test_crop_height 540 \
     --ndisp "48,24" \
     --disp_inter_r "4,1" \
     --dlossw "0.5,2.0"  \
