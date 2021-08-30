@@ -226,9 +226,9 @@ def test(imgL,imgR,disp_true):
         img = output3
 
     if len(disp_true[mask])==0:
-    loss = 0
+        loss = 0
     else:
-    loss = F.l1_loss(img[mask],disp_true[mask]) #torch.mean(torch.abs(img[mask]-disp_true[mask]))  # end-point-error
+        loss = F.l1_loss(img[mask],disp_true[mask]) #torch.mean(torch.abs(img[mask]-disp_true[mask]))  # end-point-error
 
     image_outputs = {"disp_est": img, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
     scalar_outputs = {}
