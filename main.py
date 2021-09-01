@@ -162,7 +162,7 @@ def train(imgL,imgR, disp_L):
     image_outputs = {"disp_est": output3, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
     scalar_outputs = {}
 
-    image_outputs["errormap"] = [disp_error_image_func.apply(output, disp_true)]
+    image_outputs["errormap"] = [disp_error_image_func.apply(output3, disp_true)]
     scalar_outputs["loss"] = [loss.item()]
 
 
