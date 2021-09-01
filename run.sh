@@ -6,7 +6,7 @@ python /cephfs/jianyu/PSMNet/main.py \
     --trainlist /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training_lists/all_train.txt \
     --test_datapath /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training \
     --testlist /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training_lists/all_val.txt \
-    --epochs 5 \
+    --epochs 1 \
     --lrepochs "200:10" \
     --crop_width 512  \
     --crop_height 256 \
