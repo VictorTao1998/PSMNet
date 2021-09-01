@@ -54,7 +54,7 @@ class PSMNet(nn.Module):
         super(PSMNet, self).__init__()
         self.maxdisp = maxdisp
 
-        self.feature_extraction = feature_extraction()
+        self.feature_extraction = feature_extraction(False)
 
         self.dres0 = nn.Sequential(convbn_3d(64, 32, 3, 1, 1),
                                      nn.ReLU(inplace=True),
