@@ -240,7 +240,7 @@ def main():
         print('This is %d-th epoch' %(epoch))
         total_train_loss = 0
         adjust_learning_rate(optimizer,epoch)
-
+        print(epoch)
         ## training ##
         for batch_idx, data in enumerate(TrainImgLoader):
             print(batch_idx)
