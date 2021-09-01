@@ -278,7 +278,7 @@ def main():
     for batch_idx, data in enumerate(TestImgLoader):
         imgL, imgR, disp_L = data['left'], data['right'], data['disparity']
 
-        print(type(imgL), type(imgR), type(disp_L))
+        #print(type(imgL), type(imgR), type(disp_L))
         global_step = batch_idx
         do_summary = global_step % args.test_summary_freq == 0
         test_loss, image_outputs, scalar_outputs = test(imgL,imgR, disp_L)
