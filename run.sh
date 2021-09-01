@@ -1,4 +1,5 @@
 #!/bin/bash
+export PYTHONWARNINGS="ignore"
 
 python /cephfs/jianyu/PSMNet/main.py \
     --datapath /cephfs/datasets/iccv_pnp/messy-table-dataset/v9/training \
