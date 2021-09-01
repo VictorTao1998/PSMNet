@@ -13,7 +13,7 @@ python /cephfs/jianyu/PSMNet/main.py \
     --test_crop_height 540 \
     --using_ns \
     --ns_size 3 \
-    --model gwcnet-c \
+    --model stackhourglass \
     --logdir "/cephfs/jianyu/eval/psm_eval"  \
     --batch_size 2 \
     --summary_freq 50 \
