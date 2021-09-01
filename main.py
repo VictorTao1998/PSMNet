@@ -135,10 +135,10 @@ def train(imgL,imgR, disp_L):
     if args.cuda:
         imgL, imgR, disp_true = imgL.cuda(), imgR.cuda(), disp_L.cuda()
 
-    disp_gt_t = disp_L.reshape((args.batch_size,1,args.crop_height,args.crop_width))
+    disp_gt_t = disp_true.reshape((args.batch_size,1,args.crop_height,args.crop_width))
     disparity_L_from_R = apply_disparity_cu(disp_gt_t, disp_gt_t.int())
     #disp_gt = disparity_L_from_R.reshape((1,2,256,512))
-    disp_L = disparity_L_from_R.reshape((args.batch_size,args.crop_height,args.crop_width))
+    disp_true = disparity_L_from_R.reshape((args.batch_size,args.crop_height,args.crop_width))
 
 
 #---------
