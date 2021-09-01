@@ -21,9 +21,6 @@ parser.add_argument('--maxdisp', type=int ,default=192,
                     help='maxium disparity')
 parser.add_argument('--model', default='stackhourglass',
                     help='select model')
-#parser.add_argument('--datapath', default='/media/jiaren/ImageNet/SceneFlowData/',
-#                    help='datapath')
-
 parser.add_argument('--loadmodel', default= None,
                     help='load model')
 parser.add_argument('--savemodel', default='/cephfs/jianyu',
@@ -61,17 +58,6 @@ parser.add_argument('--save_freq', type=int, default=1, help='the frequency of s
 
 parser.add_argument('--log_freq', type=int, default=50, help='log freq')
 parser.add_argument('--eval_freq', type=int, default=1, help='eval freq')
-parser.add_argument("--local_rank", type=int, default=0)
-
-parser.add_argument('--mode', type=str, default="train", help='train or test mode')
-
-
-parser.add_argument('--ndisps', type=str, default="48,24", help='ndisps')
-parser.add_argument('--disp_inter_r', type=str, default="4,1", help='disp_intervals_ratio')
-parser.add_argument('--dlossw', type=str, default="0.5,2.0", help='depth loss weight for different stage')
-parser.add_argument('--cr_base_chs', type=str, default="32,32,16", help='cost regularization base channels')
-parser.add_argument('--grad_method', type=str, default="detach", choices=["detach", "undetach"], help='predicted disp detach, undetach')
-
 
 parser.add_argument('--using_ns', action='store_true', help='using neighbor search')
 parser.add_argument('--ns_size', type=int, default=3, help='nb_size')
@@ -80,12 +66,6 @@ parser.add_argument('--crop_height', type=int, required=True, help="crop height"
 parser.add_argument('--crop_width', type=int, required=True, help="crop width")
 parser.add_argument('--test_crop_height', type=int, required=True, help="crop height")
 parser.add_argument('--test_crop_width', type=int, required=True, help="crop width")
-
-parser.add_argument('--using_apex', action='store_true', help='using apex, need to install apex')
-parser.add_argument('--sync_bn', action='store_true',help='enabling apex sync BN.')
-parser.add_argument('--opt-level', type=str, default="O0")
-parser.add_argument('--keep-batchnorm-fp32', type=str, default=None)
-parser.add_argument('--loss-scale', type=str, default=None)
 
 parser.add_argument('--ground', action='store_true', help='include ground pixel')
 args = parser.parse_args()
