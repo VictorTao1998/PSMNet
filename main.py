@@ -243,8 +243,7 @@ def main():
         #print(epoch)
         ## training ##
         for batch_idx, data in enumerate(TrainImgLoader):
-            if batch_idx > 5:
-                break
+
             #print(batch_idx)
             imgL_crop, imgR_crop, disp_crop_L = data['left'], data['right'], data['disparity']
 
