@@ -52,9 +52,11 @@ class disparityregression(nn.Module):
         return out
 
 class feature_extraction(nn.Module):
-    def __init__(self):
+    def __init__(self, gan_train):
         super(feature_extraction, self).__init__()
         self.inplanes = 32
+        self.ganfeature = nn.Sequential(convbn(3, 3, 3, 1, 1, 1),
+                                        nn.ReLU(inplace=True))
         self.firstconv = nn.Sequential(convbn(3, 32, 3, 2, 1, 1),
                                        nn.ReLU(inplace=True),
                                        convbn(32, 32, 3, 1, 1, 1),
@@ -87,6 +89,8 @@ class feature_extraction(nn.Module):
                                       nn.ReLU(inplace=True),
                                       nn.Conv2d(128, 32, kernel_size=1, padding=0, stride = 1, bias=False))
 
+        self.gan_train = gan_train
+
     def _make_layer(self, block, planes, blocks, stride, pad, dilation):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
@@ -104,7 +108,11 @@ class feature_extraction(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        output      = self.firstconv(x)
+        if self.gan_train:
+            gan_fea = x
+        else:
+            gan_fea     = self.ganfeature(x)
+        output      = self.firstconv(gan_fea)
         output      = self.layer1(output)
         output_raw  = self.layer2(output)
         output      = self.layer3(output_raw)
