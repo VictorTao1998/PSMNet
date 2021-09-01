@@ -243,7 +243,9 @@ def main():
         #print(epoch)
         ## training ##
         for batch_idx, data in enumerate(TrainImgLoader):
-            print(batch_idx)
+            if batch_idx > 5:
+                break
+            #print(batch_idx)
             imgL_crop, imgR_crop, disp_crop_L = data['left'], data['right'], data['disparity']
 
             global_step = len(TrainImgLoader) * epoch + batch_idx
@@ -256,9 +258,8 @@ def main():
                 save_scalars(logger, 'train', scalar_outputs, global_step)
                 save_images(logger, 'train', image_outputs, global_step)
                 #save_texts(logger, 'train', text_outputs, global_step)
+                print('Iter %d training loss = %.3f , time = %.2f' %(batch_idx, loss, time.time() - start_time))
             del scalar_outputs, image_outputs
-
-            print('Iter %d training loss = %.3f , time = %.2f' %(batch_idx, loss, time.time() - start_time))
             total_train_loss += loss
         print('epoch %d total training loss = %.3f' %(epoch, total_train_loss/len(TrainImgLoader)))
 
@@ -275,7 +276,7 @@ def main():
     #------------- TEST ------------------------------------------------------------
     total_test_loss = 0
     for batch_idx, (imgL, imgR, disp_L) in enumerate(TestImgLoader):
-        global_step = len(TestImgLoader) * epoch + batch_idx
+        global_step = batch_idx
         do_summary = global_step % args.test_summary_freq == 0
         test_loss, image_outputs, scalar_outputs = test(imgL,imgR, disp_L)
 
@@ -283,9 +284,10 @@ def main():
             save_scalars(logger, 'test', scalar_outputs, global_step)
             save_images(logger, 'test', image_outputs, global_step)
             #save_texts(logger, 'train', text_outputs, global_step)
+            print('Iter %d test loss = %.3f' %(batch_idx, test_loss))
         del scalar_outputs, image_outputs
         
-        print('Iter %d test loss = %.3f' %(batch_idx, test_loss))
+        
         total_test_loss += test_loss
 
     print('total test loss = %.3f' %(total_test_loss/len(TestImgLoader)))
