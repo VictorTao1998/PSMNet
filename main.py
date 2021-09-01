@@ -240,7 +240,7 @@ def main():
         print('This is %d-th epoch' %(epoch))
         total_train_loss = 0
         adjust_learning_rate(optimizer,epoch)
-        print(epoch)
+        #print(epoch)
         ## training ##
         for batch_idx, data in enumerate(TrainImgLoader):
             print(batch_idx)
@@ -254,7 +254,7 @@ def main():
 
             if do_summary:
                 save_scalars(logger, 'train', scalar_outputs, global_step)
-                save_images(loggerawef, 'train', image_outputs, global_step)
+                save_images(logger, 'train', image_outputs, global_step)
                 #save_texts(logger, 'train', text_outputs, global_step)
             del scalar_outputs, image_outputs
 

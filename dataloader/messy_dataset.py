@@ -109,13 +109,13 @@ class MESSYDataset(Dataset):
         return len(self.left_filenames)
 
     def __getitem__(self, index):
-        print('ckpt0')
+        #print('ckpt0')
 
         left_img = self.load_image(os.path.join(self.datapath, self.left_filenames[index]), self.left_img == "1024_irL_real_1080.png")
         right_img = self.load_image(os.path.join(self.datapath, self.right_filenames[index]), self.left_img == "1024_irL_real_1080.png")
         #label = self.load_label(os.path.join(self.datapath, self.label[index]), True)
 
-        print('ckpt1')
+        #print('ckpt1')
 
 
         if self.disp_filenames_L:  # has disparity ground truth
@@ -139,7 +139,7 @@ class MESSYDataset(Dataset):
 
         if self.training:
             #print("left_img: ", left_img.size, " right_img: ", right_img.size, " dis_gt: ", disparity.size)
-            print('ckpt2')
+            #print('ckpt2')
             w, h = left_img.size
             crop_w, crop_h = self.crop_width, self.crop_height
 
@@ -152,7 +152,7 @@ class MESSYDataset(Dataset):
             disparity_L = disparity_L[y1:y1 + crop_h, x1:x1 + crop_w]
             disparity_R = disparity_R[y1:y1 + crop_h, x1:x1 + crop_w]
 
-            print('ckpt3')
+            #print('ckpt3')
             # to tensor, normalize
             color_jitter = transforms.ColorJitter(brightness=float(self.args.brightness), contrast=float(self.args.contrast), saturation=0, hue=0)
 
@@ -164,7 +164,7 @@ class MESSYDataset(Dataset):
                 processed = get_transform_train(color_jitter, self.args.kernel, tuple([float(e) for e in self.args.var.split(",") if e]), self.args.use_blur, self.args.use_jitter)
             right_img = processed(right_img)
 
-            print('ckpt4')
+            #print('ckpt4')
 
             return {"left": left_img,
                     "right": right_img,
