@@ -158,7 +158,7 @@ def train(imgL,imgR, disp_L):
         output = torch.squeeze(output,1)
         loss = F.smooth_l1_loss(output[mask], disp_true[mask], size_average=True)
 
-    image_outputs = {"disp_est": output, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
+    image_outputs = {"disp_est": output3, "disp_gt": disp_true, "imgL": imgL, "imgR": imgR}
     scalar_outputs = {}
 
     image_outputs["errormap"] = [disp_error_image_func.apply(output, disp_true)]
