@@ -32,14 +32,14 @@ parser.add_argument('--seed', type=int, default=1, metavar='S',
 
 
 parser.add_argument('--datapath', required=True, help='data path')
-parser.add_argument('--depthpath', required=True, help='depth path')
+#parser.add_argument('--depthpath', required=True, help='depth path')
 parser.add_argument('--test_datapath', required=True, help='data path')
-parser.add_argument('--test_sim_datapath', required=True, help='data path')
-parser.add_argument('--test_real_datapath', required=True, help='data path')
+#parser.add_argument('--test_sim_datapath', required=True, help='data path')
+#parser.add_argument('--test_real_datapath', required=True, help='data path')
 parser.add_argument('--trainlist', required=True, help='training list')
 parser.add_argument('--testlist', required=True, help='testing list')
-parser.add_argument('--sim_testlist', required=True, help='testing list')
-parser.add_argument('--real_testlist', required=True, help='testing list')
+#parser.add_argument('--sim_testlist', required=True, help='testing list')
+#parser.add_argument('--real_testlist', required=True, help='testing list')
 
 parser.add_argument('--lr', type=float, default=0.001, help='base learning rate')
 parser.add_argument('--batch_size', type=int, default=1, help='training batch size')
@@ -76,12 +76,12 @@ if args.cuda:
 
 #all_left_img, all_right_img, all_left_disp, test_left_img, test_right_img, test_left_disp = lt.dataloader(args.datapath)
 
-train_dataset = MESSYDataset(args.datapath, args.depthpath, args.trainlist, True,
+train_dataset = MESSYDataset(args.datapath, args.trainlist, True,
                               crop_height=args.crop_height, crop_width=args.crop_width,
                               test_crop_height=args.test_crop_height, test_crop_width=args.test_crop_width,
                               left_img="0128_irL_denoised_half.png", right_img="0128_irR_denoised_half.png", args=args)
 
-test_dataset = MESSYDataset(args.test_datapath, args.depthpath, args.testlist, False,
+test_dataset = MESSYDataset(args.test_datapath, args.testlist, False,
                              crop_height=args.crop_height, crop_width=args.crop_width,
                              test_crop_height=args.test_crop_height, test_crop_width=args.test_crop_width,
                              left_img="0128_irL_denoised_half.png", right_img="0128_irR_denoised_half.png", args=args)
