@@ -18,7 +18,7 @@ python /cephfs/jianyu/PSMNet/main.py \
     --logdir "/cephfs/jianyu/eval/psm_eval"  \
     --batch_size 4 \
     --test_batch_size 2 \
-    --summary_freq 50 \
+    --summary_freq 500 \
     --test_summary_freq 500 \
     --brightness 0.5 \
     --contrast 0.5 \
