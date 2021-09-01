@@ -202,14 +202,7 @@ class MESSYDataset(Dataset):
             if disparity_R is not None:
                 return {"left": left_img,
                         "right": right_img,
-                        "disparity": disparity_R,
-                        "disparity_rgb": disparity,
-                        "top_pad": top_pad,
-                        "right_pad": right_pad,
-                        "depth": depthL,
-                        "baseline": b,
-                        "baseline_rgb": br,
-                        "f": f}
+                        "disparity": disparity_R}
             else:
                 return {"left": left_img,
                         "right": right_img,

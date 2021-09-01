@@ -16,7 +16,8 @@ python /cephfs/jianyu/PSMNet/main.py \
     --ns_size 3 \
     --model stackhourglass \
     --logdir "/cephfs/jianyu/eval/psm_eval"  \
-    --batch_size 2 \
+    --batch_size 4 \
+    --test_batch_size 2 \
     --summary_freq 50 \
     --test_summary_freq 500 \
     --brightness 0.5 \
