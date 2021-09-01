@@ -243,22 +243,23 @@ def main():
 
         ## training ##
         for batch_idx, data in enumerate(TrainImgLoader):
-                imgL_crop, imgR_crop, disp_crop_L = data['left'], data['right'], data['disparity']
+            print(batch_idx)
+            imgL_crop, imgR_crop, disp_crop_L = data['left'], data['right'], data['disparity']
 
-                global_step = len(TrainImgLoader) * epoch + batch_idx
-                do_summary = global_step % args.summary_freq == 0
-                start_time = time.time()
+            global_step = len(TrainImgLoader) * epoch + batch_idx
+            do_summary = global_step % args.summary_freq == 0
+            start_time = time.time()
 
-                loss, image_outputs, scalar_outputs = train(imgL_crop,imgR_crop, disp_crop_L)
+            loss, image_outputs, scalar_outputs = train(imgL_crop,imgR_crop, disp_crop_L)
 
-                if do_summary:
-                    save_scalars(logger, 'train', scalar_outputs, global_step)
-                    save_images(logger, 'train', image_outputs, global_step)
-                    #save_texts(logger, 'train', text_outputs, global_step)
-                del scalar_outputs, image_outputs
+            if do_summary:
+                save_scalars(logger, 'train', scalar_outputs, global_step)
+                save_images(logger, 'train', image_outputs, global_step)
+                #save_texts(logger, 'train', text_outputs, global_step)
+            del scalar_outputs, image_outputs
 
-                print('Iter %d training loss = %.3f , time = %.2f' %(batch_idx, loss, time.time() - start_time))
-                total_train_loss += loss
+            print('Iter %d training loss = %.3f , time = %.2f' %(batch_idx, loss, time.time() - start_time))
+            total_train_loss += loss
         print('epoch %d total training loss = %.3f' %(epoch, total_train_loss/len(TrainImgLoader)))
 
         #SAVE
