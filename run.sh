@@ -15,7 +15,7 @@ python /cephfs/jianyu/PSMNet/main.py \
     --using_ns \
     --ns_size 3 \
     --model stackhourglass \
-    --logdir "/cephfs/jianyu/eval/psm_eval"  \
+    --logdir "/cephfs/jianyu/eval/psm_eval_test"  \
     --batch_size 4 \
     --test_batch_size 2 \
     --summary_freq 500 \
