@@ -111,6 +111,7 @@ class feature_extraction(nn.Module):
         if self.gan_train:
             gan_fea = x
         else:
+            print('good')
             gan_fea     = self.ganfeature(x)
         output      = self.firstconv(gan_fea)
         output      = self.layer1(output)
